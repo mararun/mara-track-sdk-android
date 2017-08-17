@@ -302,7 +302,17 @@ protected int getRunStatus();
 		"distance": 217.39579980598864,           // 距离，单位米
 		"duration": 60,                           // 时长，单位秒
 		"seq_no": 0,                              // 数据编号
-		"step": 123                               // 总步数
+		"step": 123                               // 单位总步数
+	},
+    "total_step_num": 1684.0,                     // 总步数
+	"trackpoints": [{
+		"altitude": 62.5,                         // 定位点海拔
+		"latitude": 39.85809348,                  // 定位点纬度
+		"longitude": 116.4951745,                 // 定位点经度
+		"seq_no": 0,                              // 定位点编号
+		"speed": 2.45,                            // 定位点瞬时速度，单位米/秒
+		"status": 1,                              // 定位点状态，1为跑步中，2为手动暂停，3为自动暂停
+		"timestamp": 1496744718                   // 定位点时间戳
 	},
 	...
 ```
