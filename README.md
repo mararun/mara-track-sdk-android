@@ -4,7 +4,7 @@
 ### 整体结构
 SDK整体结构的UML如下图所示。
 
->产品 > Android SDK集成文档 > tracker-sdk-android.png
+![整体UML图](https://github.com/mararun/mara-track-sdk-android/blob/master/tracker-sdk-android.png?raw=true)
 
 #### MaraRunEngineManager
 对Engine进行生命周期管理和初始化。
@@ -56,7 +56,8 @@ protected MaraTrackerConfig createRunConfig();
 
 ### 状态控制
 Engine的状态转换如下图所示：
-> 产品 > Android SDK集成文档 > tracker-sdk-android-run-stat.png
+
+![Engine状态转换](https://github.com/mararun/mara-track-sdk-android/blob/master/tracker-sdk-android-run-stat.png?raw=true)
 
 利用上图所示的下列方法对Engine跑步状态进行控制：
 
