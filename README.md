@@ -31,9 +31,23 @@ SDK对于Engine进行了简单封装，对外提供初始化、控制、数据�
     android:process=":run" />
 ```
 
-### KEY的保存和认证
+### KEY认证
 
->todo
+使用Engine需要进行认证。在获取Engine授权时，需要提供App的Package Name，获取一个App Key。请妥善保存此Key。
+利用下面的方法进行认证初始化：
+
+```java
+    MaraTrackerManager.getInstance().init(
+        this,
+        Constants.TRACK_ENGINE_KEY,
+            (result, reason) -> {
+                // resule为boolean类型，是否认证成功，
+                // reason为String，以字符串方式返回对开发者友好的认证结果
+            }
+    );
+```
+
+需要注意的是，此方法需要联网访问。请为App设置联网权限。
 
 ### 配置文件
 `MaraTrackerConfig`封装引擎初始化和配置需要的一些选项，包括：
@@ -96,7 +110,7 @@ protected void resumeRun();
 protected void updateLocation(double lat, double lon, double alt);
 ```
 
-需要注意的是，Engine会动态建议定位数据的更新间隔，并在下列回调中返回建议值：
+Engine会动态建议定位数据的更新间隔，并在下列回调中返回建议值：
 
 ```java
 /**
@@ -318,10 +332,3 @@ protected int getRunStatus();
     //...
 }
 ```
-
-
-
-
-
-
- 
