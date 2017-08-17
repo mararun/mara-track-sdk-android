@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Mararun Tracker Demo</string>
+    <string name="stop_run_before_exit">请先结束跑步</string>
+    <string name="start_run">开始跑步</string>
+    <string name="pause_run">暂停</string>
+    <string name="continue_run">继续</string>
+    <string name="stop_run">结束</string>
+    <string name="no_data">--</string>
+    <string name="distance">KM</string>
+    <string name="duration">时长</string>
+    <string name="avg_pace">平均配速</string>
+    <string name="lap_pace">当前配速</string>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#131215</color>
+    <color name="colorPrimaryDark">#000</color>
+    <color name="colorAccent">#FC1337</color>
+    <color name="runContinueBg">#ff0</color>
+    <color name="runInfoTitle">#aaa</color>
+    <color name="runInfo">#ddd</color>
+    <color name="runDetailLine">#12f</color>
+</resources>
