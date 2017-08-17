@@ -58,6 +58,7 @@ SDK对于Engine进行了简单封装，对外提供初始化、控制、数据�
 * `enableDistanceProvision`是否启用步数补充跑步里程，默认开启
 * `enableHA`是否启用高可靠机制。启用以后引擎会在存储器保存跑步数据。app意外中断后可以恢复跑步，默认开启
 * `enableExceptionalPointFilter`是否开启飘移点过滤，默认开启
+
 如果希望使用自定义配置，重写MaraRunningEngineService基类的下列方法：
 
 ```java
