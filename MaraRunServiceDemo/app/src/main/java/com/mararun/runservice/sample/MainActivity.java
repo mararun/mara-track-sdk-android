@@ -58,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             .concat("MaraTrack auth passed: ").concat(String.valueOf(result)).concat("\n")
                             .concat("MaraTrack auth detail: ").concat(reason).concat("\n");
                     tvInfo.append(infoString);
+
+                    findViewById(R.id.v_start).setEnabled(result);
                 }
         );
     }
