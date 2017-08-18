@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:gravity="center"
+        android:gravity="left"
         android:textColor="@color/colorPrimary"
         android:textSize="20sp" />
 
@@ -21,7 +21,8 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="100dp"
-        android:background="@drawable/bg_start_run"
+        android:background="@drawable/selector_start_run"
+        android:enabled="false"
         android:gravity="center"
         android:text="@string/start_run"
         android:textColor="@android:color/white"

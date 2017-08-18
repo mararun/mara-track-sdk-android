@@ -10,4 +10,5 @@
     <string name="duration">时长</string>
     <string name="avg_pace">平均配速</string>
     <string name="lap_pace">当前配速</string>
+    <string name="preparing_engine">Engine is being initialized&#8230;\n</string>
 </resources>
