@@ -302,8 +302,9 @@ protected int getRunStatus();
             "step_freq": 2.8230839399443743,      // 圈平均步频，单位步/秒
             "step_length": 1.3458950201884252,    // 圈平均步长，单位米
             "step_num": 743                       // 圈总步数
-        },
-        //...,
+        }
+        //...
+        ],
         "lap_num": 12                             // 总圈数，包括不足一圈距离的最后一圈
     },
     "max_pace": 256.68859662604513,               // 最快配速，单位秒/每圈距离
@@ -319,7 +320,9 @@ protected int getRunStatus();
         "duration": 60,                           // 时长，单位秒
         "seq_no": 0,                              // 数据编号
         "step": 123                               // 单位总步数
-    },
+    }
+    //...
+    ],
     "total_step_num": 1684.0,                     // 总步数
     "trackpoints": [{
         "altitude": 62.5,                         // 定位点海拔
@@ -329,7 +332,7 @@ protected int getRunStatus();
         "speed": 2.45,                            // 定位点瞬时速度，单位米/秒
         "status": 1,                              // 定位点状态，1为跑步中，2为手动暂停，3为自动暂停
         "timestamp": 1496744718                   // 定位点时间戳
-    },
-    //...
+    }
+    ]//...
 }
 ```

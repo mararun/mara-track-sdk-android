@@ -13,6 +13,7 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.mararun.runservice.MaraTrackerConfig;
 import com.mararun.runservice.engine.MaraRunningEngineService;
 import com.mararun.runservice.pedometer.AccelerometerPedometer;
 import com.mararun.runservice.pedometer.Pedometer;
@@ -81,6 +82,14 @@ public class MyRunningService extends MaraRunningEngineService implements AMapLo
     protected void onRunFinished() {
         // 在引擎完成close操作后调用
         stopLocation();
+    }
+
+    @Override
+    protected MaraTrackerConfig createRunConfig() {
+        MaraTrackerConfig maraTrackerConfig = MaraTrackerConfig.createDefault();
+        maraTrackerConfig.setEnableAutoPause(false);//自动暂停关闭
+        maraTrackerConfig.setEnvironment(1);//1路跑，2室内跑
+        return maraTrackerConfig;
     }
 
     @Override
