@@ -9,10 +9,6 @@ import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
 
-import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationClientOption;
-import com.amap.api.location.AMapLocationListener;
 import com.mararun.runservice.MaraTrackerConfig;
 import com.mararun.runservice.engine.MaraRunningEngineService;
 import com.mararun.runservice.pedometer.AccelerometerPedometer;
@@ -30,8 +26,7 @@ import java.lang.ref.WeakReference;
  * Created by mararun
  */
 
-public class MyRunningService extends MaraRunningEngineService implements AMapLocationListener {
-    private AMapLocationClient mLocationClient;
+public class MyRunningService extends MaraRunningEngineService {
 
     private RunDetailAccessHelper mRunDetailSaver = new FsRunDetailAccessHelper();
     private RemoteCallbackList<IRunningServiceObserver> mObservers = new RemoteCallbackList<>();
@@ -49,7 +44,6 @@ public class MyRunningService extends MaraRunningEngineService implements AMapLo
     protected void preRunStarted() {
         // 此方法在执行startRun和收到onRunStarted回调之间调用
         // 用于进行一些service需要的工作，例如保活机制初始化等
-        startLocation();
     }
 
     @Override
@@ -80,8 +74,7 @@ public class MyRunningService extends MaraRunningEngineService implements AMapLo
 
     @Override
     protected void onRunFinished() {
-        // 在引擎完成close操作后调用
-        stopLocation();
+
     }
 
     @Override
@@ -93,72 +86,16 @@ public class MyRunningService extends MaraRunningEngineService implements AMapLo
     }
 
     @Override
-    protected void onRunDataUpdated(double distance, long duration, int avgPace, int lapPace, boolean lastLocationValid) {
+    protected void onRunDataUpdated(double distance, long duration, int avgPace, int lapPace, boolean lastLocationValid, double latitude, double longitude) {
         safeObserverBroadcast(observer -> {
             mRunInfo.setDistance(distance);
             mRunInfo.setDuration(duration);
             mRunInfo.setPace(avgPace);
             mRunInfo.setLapPace(lapPace);
+            mRunInfo.setLat(latitude);
+            mRunInfo.setLon(longitude);
             observer.onRunDataChanged(mRunInfo);
         });
-    }
-    /* MaraRunningEngineService end */
-
-    /* Service */
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        initLocationClient();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (null != mLocationClient) {
-            mLocationClient.onDestroy();
-        }
-    }
-    /* Service end*/
-
-    /* AMapLocationListener */
-    @Override
-    public void onLocationChanged(AMapLocation aMapLocation) {
-        mRunInfo.setLat(aMapLocation.getLatitude());
-        mRunInfo.setLon(aMapLocation.getLongitude());
-        updateLocation(aMapLocation.getLatitude(), aMapLocation.getLongitude(), aMapLocation.getAltitude());
-    }
-    /* AMapLocationListener end */
-
-    private void initLocationClient() {
-        mLocationClient = new AMapLocationClient(this.getApplicationContext());
-
-        AMapLocationClientOption locationClientOption = new AMapLocationClientOption();
-        locationClientOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Device_Sensors);//可选，设置定位模式，可选的模式有高精度、仅设备、仅网络。默认为高精度模式
-        locationClientOption.setGpsFirst(false);//可选，设置是否gps优先，只在高精度模式下有效。默认关闭
-        locationClientOption.setHttpTimeOut(30000);//可选，设置网络请求超时时间。默认为30秒。在仅设备模式下无效
-        locationClientOption.setInterval(1000);//可选，设置定位间隔，单位毫秒
-        locationClientOption.setNeedAddress(true);//可选，设置是否返回逆地理地址信息。默认是ture
-        locationClientOption.setLocationCacheEnable(false);// 设置是否开启缓存
-        locationClientOption.setMockEnable(true);
-        locationClientOption.setOnceLocationLatest(false);//可选，设置是否等待wifi刷新，默认为false.如果设置为true,会自动变为单次定位，持续定位时不要使用
-
-        mLocationClient.setLocationOption(locationClientOption);
-    }
-
-    // 开始定位
-    private void startLocation() {
-        if (mLocationClient != null) {
-            mLocationClient.setLocationListener(this);
-            mLocationClient.startLocation();
-        }
-    }
-
-    // 停止定位
-    private void stopLocation() {
-        if (mLocationClient != null) {
-            mLocationClient.stopLocation();
-            mLocationClient.unRegisterLocationListener(this);
-        }
     }
 
     private void safeObserverBroadcast(RunningServiceObserverCallback observerCallback) {
