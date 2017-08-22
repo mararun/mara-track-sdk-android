@@ -51,6 +51,10 @@
 
         </meta-data>
 
+        <meta-data
+            android:name="com.mararun.sdk.key"
+            android:value="0YZUdPpywBZCQox78ybkQPjJzPqibaN8UT6lj9TjtCbuIrE6LupbJhWbeLoONFml" />
+
     </application>
 
 </manifest>
