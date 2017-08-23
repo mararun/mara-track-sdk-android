@@ -9,6 +9,7 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -112,8 +113,7 @@ public class RunActivity extends Activity implements View.OnClickListener {
             case R.id.btn_run:
                 if (isPaused()) {
                     continueRun();
-                }
-                else {
+                } else {
                     pauseRun();
                 }
                 break;
@@ -151,8 +151,7 @@ public class RunActivity extends Activity implements View.OnClickListener {
         try {
             int status = mRunningService.getRunStatus();
             return status == MyRunningService.STATUS_AUTO_PAUSE || status == MyRunningService.STATUS_PAUSE;
-        }
-        catch (RemoteException e) {
+        } catch (RemoteException e) {
             MaraLogger.e("app checkPaused ex:" + e.getMessage());
         }
         return false;
@@ -161,8 +160,7 @@ public class RunActivity extends Activity implements View.OnClickListener {
     private void pauseRun() {
         try {
             mRunningService.pauseRun();
-        }
-        catch (RemoteException e) {
+        } catch (RemoteException e) {
             MaraLogger.e("app pauseRun ex:" + e.getMessage());
         }
     }
@@ -170,8 +168,7 @@ public class RunActivity extends Activity implements View.OnClickListener {
     private void continueRun() {
         try {
             mRunningService.resumeRun();
-        }
-        catch (RemoteException e) {
+        } catch (RemoteException e) {
             MaraLogger.e("app continueRun ex:" + e.getMessage());
         }
     }
@@ -179,8 +176,7 @@ public class RunActivity extends Activity implements View.OnClickListener {
     private void startRun() {
         try {
             mRunningService.startRun();
-        }
-        catch (RemoteException e) {
+        } catch (RemoteException e) {
             MaraLogger.e("app startRun ex:" + e.getMessage());
         }
     }
@@ -190,7 +186,7 @@ public class RunActivity extends Activity implements View.OnClickListener {
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(runId -> {
                     doStopRun();
-                    afterServiceConnected();
+                    afterServiceDisconnected();
                 }, t -> MaraLogger.e("app stop run ex:" + t.getMessage()));
     }
 
@@ -199,8 +195,7 @@ public class RunActivity extends Activity implements View.OnClickListener {
             // DEMO中，stopRun为异步操作，并且通过runId进行交互
             // 在Observer中收到保存完毕跑步信息的回调
             mRunningService.stopRun();
-        }
-        catch (RemoteException e) {
+        } catch (RemoteException e) {
             MaraLogger.e("app engine stopRun ex:" + e.getMessage());
         }
     }
@@ -226,7 +221,6 @@ public class RunActivity extends Activity implements View.OnClickListener {
                     @Override
                     public void onServiceDisconnected(ComponentName name) {
                         MaraLogger.i("app bindService disconnected");
-                        afterServiceDisconnected();
                     }
                 };
                 bindService(intent, mServiceConnection, BIND_AUTO_CREATE | BIND_ABOVE_CLIENT);
@@ -240,8 +234,7 @@ public class RunActivity extends Activity implements View.OnClickListener {
     private void afterServiceConnected() {
         try {
             mRunningService.registerObserver(mRunningServiceObserver);
-        }
-        catch (RemoteException e) {
+        } catch (RemoteException e) {
             MaraLogger.e("app afterServiceConnected ex:" + e.getMessage());
         }
 
@@ -253,8 +246,7 @@ public class RunActivity extends Activity implements View.OnClickListener {
     private void afterServiceDisconnected() {
         try {
             mRunningService.unregisterObserver(mRunningServiceObserver);
-        }
-        catch (RemoteException e) {
+        } catch (RemoteException e) {
             MaraLogger.e("app afterServiceDisconnected ex:" + e.getMessage());
         }
     }
@@ -290,8 +282,7 @@ public class RunActivity extends Activity implements View.OnClickListener {
                 mAMapLineOptions.getPoints().add(lastPoint);
                 mAMapLineOptions.getPoints().add(currentPoint);
                 mAMap.addPolyline(mAMapLineOptions);
-            }
-            else {
+            } else {
                 mAMapLineOptions.getPoints().add(currentPoint);
             }
 
@@ -308,6 +299,7 @@ public class RunActivity extends Activity implements View.OnClickListener {
 
     private void handleRunStopped(long runId) {
         mRunStopped = true;
+        Log.e("stopRun ex", "stopRun ex unbindService aaaa");
         unbindService(mServiceConnection);
         runOnUiThread(() -> {
             startActivity(new Intent(this, RunDetailActivity.class).putExtra(Constants.RUN_INFO_KEY, runId));

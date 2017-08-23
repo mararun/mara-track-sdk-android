@@ -100,6 +100,7 @@ public class MyRunningService extends MaraRunningEngineService {
 
     private void safeObserverBroadcast(RunningServiceObserverCallback observerCallback) {
         int num = mObservers.beginBroadcast();
+        MaraLogger.e("safeObserverBroadcast num: " + num);
         for (int i = 0; i < num; ++i) {
             try {
                 observerCallback.call(mObservers.getBroadcastItem(i));
@@ -168,12 +169,14 @@ public class MyRunningService extends MaraRunningEngineService {
 
         @Override
         public void registerObserver(IRunningServiceObserver listener) throws RemoteException {
+            MaraLogger.e("registerObserver:" + listener);
             if (engineNotNull())
                 myRunningServiceWR.get().mObservers.register(listener);
         }
 
         @Override
         public void unregisterObserver(IRunningServiceObserver listener) throws RemoteException {
+            MaraLogger.e("unregisterObserver:" + listener);
             if (engineNotNull())
                 myRunningServiceWR.get().mObservers.unregister(listener);
         }
