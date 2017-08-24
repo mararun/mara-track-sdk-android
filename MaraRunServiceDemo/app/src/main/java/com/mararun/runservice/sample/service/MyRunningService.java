@@ -137,26 +137,26 @@ public class MyRunningService extends MaraRunningEngineService {
         @Override
         public void startRun() throws RemoteException {
             if (engineNotNull())
-                myRunningServiceWR.get().startRun();
+                MaraLogger.i("startRun " + myRunningServiceWR.get().startRun());
         }
 
         @Override
         public void pauseRun() throws RemoteException {
             if (engineNotNull())
-                myRunningServiceWR.get().pauseRun();
+                MaraLogger.i("pauseRun " + myRunningServiceWR.get().pauseRun());
         }
 
         @Override
         public void stopRun() throws RemoteException {
             if (engineNotNull()) {
-                myRunningServiceWR.get().stopRun();
+                MaraLogger.i("stopRun " + myRunningServiceWR.get().stopRun());
             }
         }
 
         @Override
         public void resumeRun() throws RemoteException {
             if (engineNotNull())
-                myRunningServiceWR.get().resumeRun();
+                MaraLogger.i("resumeRun " + myRunningServiceWR.get().resumeRun());
         }
 
         @Override
