@@ -180,6 +180,13 @@ public class MyRunningService extends MaraRunningEngineService {
             if (engineNotNull())
                 myRunningServiceWR.get().mObservers.unregister(listener);
         }
+
+        @Override
+        public void setAutoPause(boolean autoPause) throws RemoteException {
+            MaraLogger.e("setAutoPause:" + autoPause);
+            if (engineNotNull())
+                myRunningServiceWR.get().setAutoPauseEnabled(autoPause);
+        }
     }
 
     @FunctionalInterface

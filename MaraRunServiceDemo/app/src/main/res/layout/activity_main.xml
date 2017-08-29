@@ -28,4 +28,14 @@
         android:textColor="@android:color/white"
         android:textSize="16sp" />
 
+    <android.support.v7.widget.AppCompatCheckBox
+        android:id="@+id/isAutoPauseCB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/v_start"
+        android:text="@string/is_auto_pause_enable"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="32dp"
+        android:layout_marginRight="32dp" />
+
 </RelativeLayout>

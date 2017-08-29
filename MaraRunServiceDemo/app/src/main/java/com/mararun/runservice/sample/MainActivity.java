@@ -4,10 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.mararun.runservice.engine.MaraTrackerManager;
 import com.mararun.runservice.util.MaraLogger;
+
+import static com.mararun.runservice.sample.RunActivity.EXTRA_AUTO_PAUSE;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -25,7 +28,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.v_start:
-                startActivity(new Intent(this, RunActivity.class));
+                Intent intent = new Intent(this, RunActivity.class);
+                intent.putExtra(EXTRA_AUTO_PAUSE, ((CheckBox) findViewById(R.id.isAutoPauseCB)).isChecked());
+                startActivity(intent);
                 break;
             default:
                 break;

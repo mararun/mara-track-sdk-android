@@ -55,6 +55,9 @@ public class RunActivity extends Activity implements View.OnClickListener {
 
     private boolean mRunStopped;
 
+    public static final String EXTRA_AUTO_PAUSE = "EXTRA_AUTO_PAUSE";
+    private boolean isAutoPause;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +66,7 @@ public class RunActivity extends Activity implements View.OnClickListener {
 
         initMap(savedInstanceState);
         initViews();
+        isAutoPause = getIntent().getBooleanExtra(EXTRA_AUTO_PAUSE,false);
     }
 
     @Override
@@ -175,6 +179,7 @@ public class RunActivity extends Activity implements View.OnClickListener {
 
     private void startRun() {
         try {
+            mRunningService.setAutoPause(isAutoPause);
             mRunningService.startRun();
         } catch (RemoteException e) {
             MaraLogger.e("app startRun ex:" + e.getMessage());

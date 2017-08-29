@@ -11,6 +11,7 @@ interface IRunningService {
        void stopRun();//停止跑步并获取保存的跑步id
        void resumeRun();//继续跑步
        int getRunStatus();//获取跑步状态
+       void setAutoPause(boolean autoPause);//设置自动暂停
 
        void registerObserver(IRunningServiceObserver listener);//注册监听
        void unregisterObserver(IRunningServiceObserver listener);//取消注册监听
