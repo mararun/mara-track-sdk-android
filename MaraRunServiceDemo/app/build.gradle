@@ -56,8 +56,10 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile "com.google.code.gson:gson:2.8.1"
     testCompile 'junit:junit:4.12'
-    compile(name: 'mararunservice-1.0', ext: 'aar')
+    compile(name: 'mararunservice-1.0.1', ext: 'aar')
     compile 'com.amap.api:3dmap:5.2.1'
     compile "io.reactivex:rxjava:1.2.1"
     compile "io.reactivex:rxandroid:1.2.1"
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
 }
