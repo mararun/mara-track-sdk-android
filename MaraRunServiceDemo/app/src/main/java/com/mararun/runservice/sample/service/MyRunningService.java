@@ -31,6 +31,7 @@ public class MyRunningService extends MaraRunningEngineService {
     private RunDetailAccessHelper mRunDetailSaver = new FsRunDetailAccessHelper();
     private RemoteCallbackList<IRunningServiceObserver> mObservers = new RemoteCallbackList<>();
     private IpcRunInfo mRunInfo = new IpcRunInfo();
+    private boolean isResumeFromReStart;
 
     /* MaraRunningEngineService */
     @Override
@@ -75,6 +76,22 @@ public class MyRunningService extends MaraRunningEngineService {
     @Override
     protected void onRunFinished() {
 
+    }
+
+    @Override
+    protected void resumeFromReStart(int runningStatus) {
+        MaraLogger.e("resumeFromReStart");
+        isResumeFromReStart = true;
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        if (isResumeFromReStart) {
+            MaraLogger.e("resumeJson " + getRunDetailJson());//todo 展示到跑步中的UI
+            resumeRun();
+            isResumeFromReStart = false;
+        }
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
