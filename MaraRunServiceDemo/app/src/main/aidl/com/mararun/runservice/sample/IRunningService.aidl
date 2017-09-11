@@ -15,4 +15,5 @@ interface IRunningService {
 
        void registerObserver(IRunningServiceObserver listener);//注册监听
        void unregisterObserver(IRunningServiceObserver listener);//取消注册监听
+       String restoreInterruptData();//跑步恢复
 }

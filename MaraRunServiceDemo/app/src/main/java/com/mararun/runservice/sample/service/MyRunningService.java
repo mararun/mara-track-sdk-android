@@ -13,6 +13,7 @@ import com.mararun.runservice.MaraTrackerConfig;
 import com.mararun.runservice.engine.MaraRunningEngineService;
 import com.mararun.runservice.pedometer.AccelerometerPedometer;
 import com.mararun.runservice.pedometer.Pedometer;
+import com.mararun.runservice.sample.Constants;
 import com.mararun.runservice.sample.IRunningService;
 import com.mararun.runservice.sample.IRunningServiceObserver;
 import com.mararun.runservice.sample.model.IpcRunInfo;
@@ -32,6 +33,7 @@ public class MyRunningService extends MaraRunningEngineService {
     private RemoteCallbackList<IRunningServiceObserver> mObservers = new RemoteCallbackList<>();
     private IpcRunInfo mRunInfo = new IpcRunInfo();
     private boolean isResumeFromReStart;
+    private IRunningServiceStub iRunningServiceStub = new IRunningServiceStub(this);
 
     /* MaraRunningEngineService */
     @Override
@@ -79,12 +81,6 @@ public class MyRunningService extends MaraRunningEngineService {
     }
 
     @Override
-    protected void resumeFromReStart(int runningStatus) {
-        MaraLogger.e("resumeFromReStart");
-        isResumeFromReStart = true;
-    }
-
-    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (isResumeFromReStart) {
             MaraLogger.e("resumeJson " + getRunDetailJson());//todo 展示到跑步中的UI
@@ -99,6 +95,7 @@ public class MyRunningService extends MaraRunningEngineService {
         MaraTrackerConfig maraTrackerConfig = MaraTrackerConfig.createDefault();
         maraTrackerConfig.setEnableAutoPause(false);//自动暂停关闭
         maraTrackerConfig.setEnvironment(1);//1路跑，2室内跑
+        maraTrackerConfig.setUserId(Constants.USER_ID);//UserID选填
         return maraTrackerConfig;
     }
 
@@ -136,7 +133,7 @@ public class MyRunningService extends MaraRunningEngineService {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return new IRunningServiceStub(this);
+        return iRunningServiceStub;
     }
 
     static class IRunningServiceStub extends IRunningService.Stub {
@@ -203,6 +200,14 @@ public class MyRunningService extends MaraRunningEngineService {
             MaraLogger.e("setAutoPause:" + autoPause);
             if (engineNotNull())
                 myRunningServiceWR.get().setAutoPauseEnabled(autoPause);
+        }
+
+        @Override
+        public String restoreInterruptData() throws RemoteException {
+            MaraLogger.e("restoreInterruptData");
+            if (engineNotNull())
+                return myRunningServiceWR.get().restoreInterruptData();
+            return "";
         }
     }
 

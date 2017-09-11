@@ -12,4 +12,5 @@
     <string name="lap_pace">当前配速</string>
     <string name="preparing_engine">Engine is being initialized&#8230;\n</string>
     <string name="is_auto_pause_enable">是否开启自动暂停</string>
+    <string name="restoreInterruptData">从异常中断中恢复</string>
 </resources>

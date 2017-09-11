@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.mararun.runservice.MaraTrackerConfig;
 import com.mararun.runservice.engine.MaraTrackerManager;
 import com.mararun.runservice.util.MaraLogger;
 
@@ -28,13 +29,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.v_start:
-                Intent intent = new Intent(this, RunActivity.class);
-                intent.putExtra(EXTRA_AUTO_PAUSE, ((CheckBox) findViewById(R.id.isAutoPauseCB)).isChecked());
-                startActivity(intent);
+                jumpRunActivity();
                 break;
             default:
                 break;
         }
+    }
+
+    private void jumpRunActivity() {
+        Intent intent = new Intent(this, RunActivity.class);
+        intent.putExtra(EXTRA_AUTO_PAUSE, ((CheckBox) findViewById(R.id.isAutoPauseCB)).isChecked());
+        startActivity(intent);
     }
 
     private void prepare() {
@@ -58,6 +63,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     tvInfo.append(infoString);
 
                     findViewById(R.id.v_start).setEnabled(result);
+                    if (!result)
+                        return;
+                    MaraTrackerManager.getInstance().initRunningEngine(Constants.USER_ID, MaraTrackerConfig.DEFAULT_LAP_DISTANCE, true);
+                    if (MaraTrackerManager.getInstance().hasRunStarted()) {
+                        jumpRunActivity();
+                    }
                 }
         );
     }

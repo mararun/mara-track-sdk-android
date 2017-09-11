@@ -9,4 +9,5 @@ public class Constants {
     public static final int LAP_METER = 1000;
 
     public static final String RUN_INFO_KEY = "run_info";
+    public static final String USER_ID = "123456abc";//选填
 }

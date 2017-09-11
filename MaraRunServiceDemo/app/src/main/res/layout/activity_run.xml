@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <com.amap.api.maps.MapView android:id="@+id/v_map"
+    <com.amap.api.maps.MapView
+        android:id="@+id/v_map"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/no_data"
                     android:textColor="@color/runInfo"
-                    android:textSize="24sp"/>
+                    android:textSize="24sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -118,26 +120,44 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <Button android:id="@+id/btn_run"
+
+            <Button
+                android:id="@+id/btn_start_run"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:padding="10dp"
-                android:gravity="center"
                 android:background="@color/colorAccent"
-                android:textColor="@android:color/white"
-                android:text="@string/pause_run"/>
-            <Button android:id="@+id/btn_stop"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/start_run"
+                android:textColor="@android:color/white" />
+
+            <Button
+                android:id="@+id/btn_pause_run"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:padding="10dp"
+                android:background="@color/colorAccent"
                 android:gravity="center"
-                android:background="@color/colorPrimary"
+                android:padding="10dp"
+                android:text="@string/pause_run"
                 android:textColor="@android:color/white"
-                android:text="@string/stop_run"/>
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btn_stop"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/stop_run"
+                android:textColor="@android:color/white"
+                android:visibility="gone" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

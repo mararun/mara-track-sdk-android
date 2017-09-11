@@ -9,6 +9,7 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -21,6 +22,7 @@ import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.PolylineOptions;
+import com.mararun.runservice.engine.MaraTrackerManager;
 import com.mararun.runservice.sample.model.IpcRunInfo;
 import com.mararun.runservice.sample.service.MyRunningService;
 import com.mararun.runservice.sample.util.RunInfoFormatter;
@@ -47,7 +49,9 @@ public class RunActivity extends Activity implements View.OnClickListener {
     private TextView tvDuration;
     private TextView tvAvgPace;
     private TextView tvLapPace;
-    private Button btnRun;
+    private Button btnPauseRun;
+    private Button btnStartRun;
+    private Button btnStop;
 
     private MapView mapView;
     private AMap mAMap;
@@ -66,7 +70,7 @@ public class RunActivity extends Activity implements View.OnClickListener {
 
         initMap(savedInstanceState);
         initViews();
-        isAutoPause = getIntent().getBooleanExtra(EXTRA_AUTO_PAUSE,false);
+        isAutoPause = getIntent().getBooleanExtra(EXTRA_AUTO_PAUSE, false);
     }
 
     @Override
@@ -114,7 +118,7 @@ public class RunActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btn_run:
+            case R.id.btn_pause_run:
                 if (isPaused()) {
                     continueRun();
                 } else {
@@ -123,6 +127,9 @@ public class RunActivity extends Activity implements View.OnClickListener {
                 break;
             case R.id.btn_stop:
                 stopRun();
+                break;
+            case R.id.btn_start_run:
+                startRun();
                 break;
             default:
                 break;
@@ -144,10 +151,12 @@ public class RunActivity extends Activity implements View.OnClickListener {
         tvDuration = findViewById(R.id.tv_duration);
         tvAvgPace = findViewById(R.id.tv_pace_avg);
         tvLapPace = findViewById(R.id.tv_pace_lap);
-        btnRun = findViewById(R.id.btn_run);
-        Button btnStop = findViewById(R.id.btn_stop);
+        btnPauseRun = findViewById(R.id.btn_pause_run);
+        btnStartRun = findViewById(R.id.btn_start_run);
+        btnStop = findViewById(R.id.btn_stop);
 
-        btnRun.setOnClickListener(this);
+        btnPauseRun.setOnClickListener(this);
+        btnStartRun.setOnClickListener(this);
         btnStop.setOnClickListener(this);
     }
 
@@ -181,6 +190,7 @@ public class RunActivity extends Activity implements View.OnClickListener {
         try {
             mRunningService.setAutoPause(isAutoPause);
             mRunningService.startRun();
+            changeBtnStatus();
         } catch (RemoteException e) {
             MaraLogger.e("app startRun ex:" + e.getMessage());
         }
@@ -238,14 +248,24 @@ public class RunActivity extends Activity implements View.OnClickListener {
 
     private void afterServiceConnected() {
         try {
+            String json = mRunningService.restoreInterruptData();
+            MaraLogger.e("restoreInterruptData " + json);
+            if (!mRunStopped && MaraTrackerManager.getInstance().hasRunStarted(mRunningService.getRunStatus())) {
+                changeBtnStatus();
+                if (!TextUtils.isEmpty(json))
+                    Toast.makeText(this, R.string.restoreInterruptData, Toast.LENGTH_LONG).show();
+            }
             mRunningService.registerObserver(mRunningServiceObserver);
         } catch (RemoteException e) {
             MaraLogger.e("app afterServiceConnected ex:" + e.getMessage());
         }
 
-        if (!mRunStopped) {
-            startRun();
-        }
+    }
+
+    private void changeBtnStatus() {
+        btnStartRun.setVisibility(View.GONE);
+        btnPauseRun.setVisibility(View.VISIBLE);
+        btnStop.setVisibility(View.VISIBLE);
     }
 
     private void afterServiceDisconnected() {
@@ -297,8 +317,8 @@ public class RunActivity extends Activity implements View.OnClickListener {
 
     private void handlePauseStatusChanged(boolean isPaused) {
         runOnUiThread(() -> {
-            btnRun.setText(isPaused ? R.string.continue_run : R.string.pause_run);
-            btnRun.setBackgroundColor(ContextCompat.getColor(this, isPaused ? R.color.runContinueBg : R.color.colorAccent));
+            btnPauseRun.setText(isPaused ? R.string.continue_run : R.string.pause_run);
+            btnPauseRun.setBackgroundColor(ContextCompat.getColor(this, isPaused ? R.color.runContinueBg : R.color.colorAccent));
         });
     }
 
